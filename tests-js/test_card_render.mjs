@@ -1187,6 +1187,25 @@ describe('fixed-rows contract of HA sections view (--row-size)', () => {
     assert.ok(!card.classList.contains('fit-rows'));
   });
 
+  test('a root title above a single column still fills the cell', async () => {
+    const { HomeTasksCard } = await loadCard({ force: true });
+    const hass = makeRecordingHass({
+      'home_tasks/get_lists': { lists: [{ id: 'L1', name: 'Test List' }] },
+      'home_tasks/get_tasks': { tasks: [] },
+    });
+    const card = new HomeTasksCard();
+    card.style.setProperty('--row-size', '6');
+    card.setConfig({ title: 'Today', columns: [{ list_id: 'L1' }] });
+    card.hass = hass;
+    card.ownerDocument.body.appendChild(card);
+    await flush(card);
+    // The wrapper displaces the column as ha-card's direct child, so the
+    // fill has to be handed on explicitly or the column sizes to content.
+    assert.ok(card.shadowRoot.querySelector('.titled-single > .card-column'));
+    assert.ok(card._getStyles().includes(
+      ':host(.fit-rows) .titled-single > .card-column { flex: 1 1 auto; min-height: 0; }'));
+  });
+
   test('exposes getGridOptions (current HA API) with auto rows by default', async () => {
     const card = await setup(undefined);
     // JSON compare: the object comes from the jsdom realm (different Object prototype)
@@ -1985,5 +2004,126 @@ describe('review round 3 card fixes', () => {
     doc.body.appendChild(card);            // reattach (dashboard view switch)
     assert.ok(card._listsRetryTimer, 'retry rescheduled on reattach');
     card.remove();
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// E-ink mode (card-level `eink: true`) and the card-level title
+// ---------------------------------------------------------------------------
+
+describe('e-ink mode', () => {
+  async function setup(config) {
+    const { HomeTasksCard } = await loadCard({ force: true });
+    const hass = makeRecordingHass({
+      'home_tasks/get_lists': { lists: [{ id: 'L1', name: 'Test List' }] },
+      'home_tasks/get_tasks': {
+        tasks: [{ id: 'T1', title: 'One', sort_order: 0, sub_items: [] }],
+      },
+    });
+    const card = new HomeTasksCard();
+    card.setConfig(config);
+    card.hass = hass;
+    card.ownerDocument.body.appendChild(card);
+    await flush(card);
+    return card;
+  }
+
+  test('eink: true puts the mode class on the host', async () => {
+    const card = await setup({ eink: true, columns: [{ list_id: 'L1' }] });
+    assert.ok(card.classList.contains('eink'));
+  });
+
+  test('no eink key: no mode class', async () => {
+    const card = await setup({ columns: [{ list_id: 'L1' }] });
+    assert.ok(!card.classList.contains('eink'));
+  });
+
+  test('the class follows a config change without waiting for a render', async () => {
+    const card = await setup({ columns: [{ list_id: 'L1' }] });
+    card.setConfig({ eink: true, columns: [{ list_id: 'L1' }] });
+    assert.ok(card.classList.contains('eink'), 'setConfig alone flips it');
+    card.setConfig({ columns: [{ list_id: 'L1' }] });
+    assert.ok(!card.classList.contains('eink'), 'and flips it back off');
+  });
+
+  test('eink stays at the root when the flat single-list format is migrated', async () => {
+    // The migration rest-spreads every root key into the column; a card-level
+    // key swallowed in there would never be read again.
+    const card = await setup({ type: 'custom:home-tasks-card', list_id: 'L1', eink: true });
+    assert.equal(card._config.eink, true, 'kept at the root');
+    assert.equal(card._config.columns[0].eink, undefined, 'not buried in the column');
+    assert.equal(card._config.columns[0].list_id, 'L1', 'column keys still migrate');
+    assert.ok(card.classList.contains('eink'));
+  });
+
+  test('motion is damped, not disabled — the reset keeps transitionend firing', async () => {
+    const card = await setup({ eink: true, columns: [{ list_id: 'L1' }] });
+    const css = card._getStyles();
+    // A zero duration dispatches no transitionend/animationend, which would
+    // strand _animateExpandedDetails (it releases height:auto from that
+    // listener and has no fallback timer).
+    assert.ok(css.includes('transition-duration: 0.01ms !important;'));
+    assert.ok(css.includes('animation-duration: 0.01ms !important;'));
+    assert.ok(!/:host\(\.eink\)[^{]*\{[^}]*\btransition:\s*none/.test(css),
+      'must not blanket-disable transitions');
+    assert.ok(!/:host\(\.eink\)[^{]*\{[^}]*\banimation:\s*none/.test(css),
+      'must not blanket-disable animations');
+  });
+
+  test('the generic chip rule leaves padding and sizing to .compact', async () => {
+    // :host(.eink) counts as two classes, so a padding/font-size here would
+    // outrank ".compact .sub-badge" and silently undo compact mode.
+    const card = await setup({ eink: true, columns: [{ list_id: 'L1' }] });
+    const css = card._getStyles();
+    const chipRule = css.match(
+      /:host\(\.eink\) \.sub-badge,[\s\S]*?\{([\s\S]*?)\}/);
+    assert.ok(chipRule, 'generic chip rule present');
+    for (const prop of ['padding', 'display', 'font-size']) {
+      assert.ok(!new RegExp(`\\b${prop}\\s*:`).test(chipRule[1]),
+        `generic chip rule must not set ${prop}`);
+    }
+  });
+});
+
+describe('card-level title', () => {
+  async function setup(config) {
+    const { HomeTasksCard } = await loadCard({ force: true });
+    const hass = makeRecordingHass({
+      'home_tasks/get_lists': { lists: [{ id: 'L1', name: 'Test List' }] },
+      'home_tasks/get_tasks': { tasks: [] },
+    });
+    const card = new HomeTasksCard();
+    card.setConfig(config);
+    card.hass = hass;
+    card.ownerDocument.body.appendChild(card);
+    await flush(card);
+    return card;
+  }
+
+  test('renders above a single column instead of being dropped', async () => {
+    const card = await setup({ title: 'Today at Home', columns: [{ list_id: 'L1' }] });
+    const title = card.shadowRoot.querySelector('.card-global-title');
+    assert.ok(title, 'root title reaches the DOM for a one-column card');
+    assert.equal(title.textContent, 'Today at Home');
+    assert.ok(card.shadowRoot.querySelector('.card-column'), 'column still rendered');
+  });
+
+  test('no wrapper when there is no root title', async () => {
+    const card = await setup({ columns: [{ list_id: 'L1' }] });
+    assert.equal(card.shadowRoot.querySelector('.card-global-title'), null);
+    assert.equal(card.shadowRoot.querySelector('.titled-single'), null);
+  });
+
+  test('still renders above multiple columns', async () => {
+    const card = await setup({ title: 'Household', columns: [{ list_id: 'L1' }, { list_id: 'L1' }] });
+    assert.equal(card.shadowRoot.querySelector('.card-global-title').textContent, 'Household');
+    assert.equal(card.shadowRoot.querySelectorAll('.card-column').length, 2);
+  });
+
+  test('the column keeps its own title independently', async () => {
+    const card = await setup({ title: 'Card', columns: [{ list_id: 'L1', title: 'Column' }] });
+    assert.equal(card.shadowRoot.querySelector('.card-global-title').textContent, 'Card');
+    assert.equal(card.shadowRoot.querySelector('.title').textContent.trim(), 'Column');
   });
 });

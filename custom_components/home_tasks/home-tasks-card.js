@@ -136,6 +136,8 @@ const _TRANSLATIONS = {
     ed_icon: "Icon (optional)",
     ed_card_title: "Card title (optional)",
     ed_card_title_placeholder: "Title shown above columns",
+    ed_eink: "E-ink mode",
+    ed_eink_hint: "High contrast, no colour, no animation. For e-paper displays.",
     ed_sec_view: "Display",
     ed_sec_display: "Task features",
     ed_tile_help: "Tile view:\n• Click = complete\n• Hold = edit\n• Drag = reorder",
@@ -263,6 +265,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Code-editor", ed_visual_editor: "Visuele editor",
     ed_icon: "Pictogram (optioneel)", ed_card_title: "Kaarttitel (optioneel)",
     ed_card_title_placeholder: "Titel boven kolommen",
+    ed_eink: "E-ink-modus",
+    ed_eink_hint: "Hoog contrast, geen kleur, geen animatie. Voor e-paper-schermen.",
     ed_sec_view: "Weergave", ed_sec_display: "Configuratie",
     ed_sec_filters: "Filters",
     ed_preset_assignees: "Beperken tot personen",
@@ -364,6 +368,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Editor codice", ed_visual_editor: "Editor visuale",
     ed_icon: "Icona (opzionale)", ed_card_title: "Titolo scheda (opzionale)",
     ed_card_title_placeholder: "Titolo sopra le colonne",
+    ed_eink: "Modalit\u00e0 e-ink",
+    ed_eink_hint: "Alto contrasto, nessun colore, nessuna animazione. Per display e-paper.",
     ed_sec_view: "Visualizzazione", ed_sec_display: "Configurazione",
     ed_sec_filters: "Filtri",
     ed_preset_assignees: "Limita alle persone",
@@ -465,6 +471,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Edytor kodu", ed_visual_editor: "Edytor wizualny",
     ed_icon: "Ikona (opcjonalnie)", ed_card_title: "Tytu\u0142 karty (opcjonalnie)",
     ed_card_title_placeholder: "Tytu\u0142 nad kolumnami",
+    ed_eink: "Tryb e-ink",
+    ed_eink_hint: "Wysoki kontrast, bez kolor\u00f3w, bez animacji. Do ekran\u00f3w e-papier.",
     ed_sec_view: "Wy\u015bwietlanie", ed_sec_display: "Konfiguracja",
     ed_sec_filters: "Filtry",
     ed_preset_assignees: "Ogranicz do os\u00f3b",
@@ -566,6 +574,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Kodredigerare", ed_visual_editor: "Visuell redigerare",
     ed_icon: "Ikon (valfritt)", ed_card_title: "Korttitel (valfritt)",
     ed_card_title_placeholder: "Titel ovanf\u00f6r kolumner",
+    ed_eink: "E-ink-l\u00e4ge",
+    ed_eink_hint: "H\u00f6g kontrast, ingen f\u00e4rg, ingen animering. F\u00f6r e-papperssk\u00e4rmar.",
     ed_sec_view: "Visning", ed_sec_display: "Konfiguration",
     ed_sec_filters: "Filter",
     ed_preset_assignees: "Begr\u00e4nsa till personer",
@@ -667,6 +677,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "\u00c9diteur de code", ed_visual_editor: "\u00c9diteur visuel",
     ed_icon: "Ic\u00f4ne (optionnel)", ed_card_title: "Titre de la carte (optionnel)",
     ed_card_title_placeholder: "Titre au-dessus des colonnes",
+    ed_eink: "Mode e-ink",
+    ed_eink_hint: "Contraste \u00e9lev\u00e9, sans couleur, sans animation. Pour \u00e9crans e-paper.",
     ed_sec_view: "Affichage", ed_sec_display: "Configuration",
     ed_sec_filters: "Filtres",
     ed_preset_assignees: "Limiter aux personnes",
@@ -768,6 +780,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Editor de c\u00f3digo", ed_visual_editor: "Editor visual",
     ed_icon: "\u00cdcone (opcional)", ed_card_title: "T\u00edtulo do cart\u00e3o (opcional)",
     ed_card_title_placeholder: "T\u00edtulo acima das colunas",
+    ed_eink: "Modo e-ink",
+    ed_eink_hint: "Alto contraste, sem cor, sem anima\u00e7\u00e3o. Para ecr\u00e3s e-paper.",
     ed_sec_view: "Exibi\u00e7\u00e3o", ed_sec_display: "Configura\u00e7\u00e3o",
     ed_sec_filters: "Filtros",
     ed_preset_assignees: "Limitar a pessoas",
@@ -869,6 +883,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Editor de c\u00f3digo", ed_visual_editor: "Editor visual",
     ed_icon: "Icono (opcional)", ed_card_title: "T\u00edtulo de la tarjeta (opcional)",
     ed_card_title_placeholder: "T\u00edtulo sobre las columnas",
+    ed_eink: "Modo e-ink",
+    ed_eink_hint: "Alto contraste, sin color, sin animaci\u00f3n. Para pantallas de papel electr\u00f3nico.",
     ed_sec_view: "Visualizaci\u00f3n", ed_sec_display: "Configuraci\u00f3n",
     ed_sec_filters: "Filtros",
     ed_preset_assignees: "Limitar a personas",
@@ -970,6 +986,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440 \u043a\u043e\u0434\u0430", ed_visual_editor: "\u0412\u0438\u0437\u0443\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440",
     ed_icon: "\u0418\u043a\u043e\u043d\u043a\u0430 (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)", ed_card_title: "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0438 (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)",
     ed_card_title_placeholder: "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a \u043d\u0430\u0434 \u0441\u0442\u043e\u043b\u0431\u0446\u0430\u043c\u0438",
+    ed_eink: "\u0420\u0435\u0436\u0438\u043c e-ink",
+    ed_eink_hint: "\u0412\u044b\u0441\u043e\u043a\u0430\u044f \u043a\u043e\u043d\u0442\u0440\u0430\u0441\u0442\u043d\u043e\u0441\u0442\u044c, \u0431\u0435\u0437 \u0446\u0432\u0435\u0442\u0430, \u0431\u0435\u0437 \u0430\u043d\u0438\u043c\u0430\u0446\u0438\u0438. \u0414\u043b\u044f \u044d\u043a\u0440\u0430\u043d\u043e\u0432 \u043d\u0430 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0445 \u0447\u0435\u0440\u043d\u0438\u043b\u0430\u0445.",
     ed_sec_view: "\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", ed_sec_display: "\u041a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f",
     ed_sec_filters: "\u0424\u0438\u043b\u044c\u0442\u0440\u044b",
     ed_preset_assignees: "\u041e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0442\u044c \u043f\u043e \u043b\u044e\u0434\u044f\u043c",
@@ -1071,6 +1089,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Editor k\u00f3du", ed_visual_editor: "Vizu\u00e1ln\u00ed editor",
     ed_icon: "Ikona (voliteln\u011b)", ed_card_title: "N\u00e1zev karty (voliteln\u011b)",
     ed_card_title_placeholder: "N\u00e1zev nad sloupci",
+    ed_eink: "Re\u017eim e-ink",
+    ed_eink_hint: "Vysok\u00fd kontrast, bez barev, bez animac\u00ed. Pro displeje e-paper.",
     ed_sec_view: "Zobrazen\u00ed", ed_sec_display: "Konfigurace",
     ed_sec_filters: "Filtry",
     ed_preset_assignees: "Omezit na osoby",
@@ -1172,6 +1192,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Kodeeditor", ed_visual_editor: "Visuel editor",
     ed_icon: "Ikon (valgfrit)", ed_card_title: "Korttitel (valgfrit)",
     ed_card_title_placeholder: "Titel over kolonner",
+    ed_eink: "E-ink-tilstand",
+    ed_eink_hint: "H\u00f8j kontrast, ingen farve, ingen animation. Til e-papir-sk\u00e6rme.",
     ed_sec_view: "Visning", ed_sec_display: "Konfiguration",
     ed_sec_filters: "Filtre",
     ed_preset_assignees: "Begræns til personer",
@@ -1273,6 +1295,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Kodeeditor", ed_visual_editor: "Visuell editor",
     ed_icon: "Ikon (valgfritt)", ed_card_title: "Korttittel (valgfritt)",
     ed_card_title_placeholder: "Tittel over kolonner",
+    ed_eink: "E-ink-modus",
+    ed_eink_hint: "H\u00f8y kontrast, ingen farge, ingen animasjon. For e-papir-skjermer.",
     ed_sec_view: "Visning", ed_sec_display: "Konfigurasjon",
     ed_sec_filters: "Filtre",
     ed_preset_assignees: "Begrens til personer",
@@ -1374,6 +1398,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "Koodieditori", ed_visual_editor: "Visuaalinen editori",
     ed_icon: "Kuvake (valinnainen)", ed_card_title: "Kortin otsikko (valinnainen)",
     ed_card_title_placeholder: "Otsikko sarakkeiden yl\u00e4puolella",
+    ed_eink: "E-ink-tila",
+    ed_eink_hint: "Suuri kontrasti, ei v\u00e4rej\u00e4, ei animaatioita. E-paperin\u00e4yt\u00f6ille.",
     ed_sec_view: "N\u00e4ytt\u00f6", ed_sec_display: "Konfiguraatio",
     ed_sec_filters: "Suodattimet",
     ed_preset_assignees: "Rajaa henkil\u00f6ihin",
@@ -1475,6 +1501,8 @@ const _TRANSLATIONS = {
     ed_code_editor: "K\u00f3dszerkeszt\u0151", ed_visual_editor: "Vizu\u00e1lis szerkeszt\u0151",
     ed_icon: "Ikon (nem k\u00f6telez\u0151)", ed_card_title: "K\u00e1rtya c\u00edme (nem k\u00f6telez\u0151)",
     ed_card_title_placeholder: "C\u00edm az oszlopok felett",
+    ed_eink: "E-ink m\u00f3d",
+    ed_eink_hint: "Nagy kontraszt, sz\u00edn \u00e9s anim\u00e1ci\u00f3 n\u00e9lk\u00fcl. E-pap\u00edr kijelz\u0151kh\u00f6z.",
     ed_sec_view: "Megjelen\u00edt\u00e9s", ed_sec_display: "Konfigur\u00e1ci\u00f3",
     ed_sec_filters: "Sz\u0171r\u0151k",
     ed_preset_assignees: "Korl\u00e1toz\u00e1s szem\u00e9lyekre",
@@ -1628,6 +1656,8 @@ const _TRANSLATIONS = {
     ed_icon: "Symbol (optional)",
     ed_card_title: "Kartentitel (optional)",
     ed_card_title_placeholder: "Titel \u00fcber den Spalten",
+    ed_eink: "E-Ink-Modus",
+    ed_eink_hint: "Hoher Kontrast, keine Farbe, keine Animation. F\u00fcr E-Paper-Displays.",
     ed_sec_view: "Darstellung",
     ed_sec_display: "Aufgaben-Funktionen",
     ed_tile_help: "Kachelansicht:\n• Klicken = erledigen\n• Gedrückt halten = editieren\n• Ziehen = Position ändern",
@@ -1854,8 +1884,15 @@ class HomeTasksCard extends HTMLElement {
     // Normalize old single-list format to columns format
     // Keep HA card-level keys (type, etc.) at root, not inside column objects
     if (config.list_id && !config.columns) {
-      const { type, columns: _c, ...colConfig } = config;
-      config = { ...(type ? { type } : {}), columns: [colConfig] };
+      // Card-level keys stay at the root; everything else describes the single
+      // column. `title` is deliberately NOT pulled out — in the flat format it
+      // named the column, and _getListName still reads col.title.
+      const { type, columns: _c, eink, ...colConfig } = config;
+      config = {
+        ...(type ? { type } : {}),
+        ...(eink !== undefined ? { eink } : {}),
+        columns: [colConfig],
+      };
     }
     if (!config.columns || !Array.isArray(config.columns) || config.columns.length === 0) {
       config = { ...config, columns: [{}] };
@@ -1868,6 +1905,9 @@ class HomeTasksCard extends HTMLElement {
 
     const prevConfig = this._config || { columns: [] };
     this._config = config;
+    // Authoritative hook: makes the editor's live preview flip the moment the
+    // switch is thrown, without waiting for a render that may be deferred.
+    this._updateEink();
 
     // Sync _columns array length
     while (this._columns.length < config.columns.length) {
@@ -3475,6 +3515,7 @@ class HomeTasksCard extends HTMLElement {
     // Stash for use after the rebuild
     this._pendingFocusRestore = focusSnap;
     this._updateFitRows();
+    this._updateEink();
 
     if (!this._styleEl) {
       this._styleEl = document.createElement("style");
@@ -3529,16 +3570,23 @@ class HomeTasksCard extends HTMLElement {
 
   _buildCardContent() {
     const cols = this._config.columns;
+    // The root `title` is a card-level key (README "Card-level option
+    // reference"), so it belongs above a single column too — the one-column
+    // fast path used to return before it was ever considered, which silently
+    // dropped the key and left the column showing the todo list's own name.
+    const titleEl = this._config.title
+      ? this._el("h1", { className: "card-global-title", textContent: this._config.title })
+      : null;
     if (cols.length === 1) {
-      return this._buildColumn(0);
+      const column = this._buildColumn(0);
+      if (!titleEl) return column;
+      // The wrapper takes the column's place as ha-card's direct child, which
+      // is where ":host(.fit-rows) ha-card > div { flex: 1 1 auto }" lands.
+      // .titled-single hands that fill on to the column inside it.
+      return this._el("div", { className: "titled-single" }, [titleEl, column]);
     }
     const children = [];
-    if (this._config.title) {
-      const titleEl = document.createElement("h1");
-      titleEl.className = "card-global-title";
-      titleEl.textContent = this._config.title;
-      children.push(titleEl);
-    }
+    if (titleEl) children.push(titleEl);
     children.push(this._el("div", { className: "multi-columns" }, cols.map((_, i) => this._buildColumn(i))));
     return this._el("div", {}, children);
   }
@@ -7797,6 +7845,10 @@ class HomeTasksCard extends HTMLElement {
          the flex axis is horizontal and ".multi-columns .card-column { flex: 1 }"
          keeps the kanban columns equal-width; vertical fill comes from
          align-items: stretch plus the column's own min-height: 0. */
+      /* A root title above a single column: the column is no longer a direct
+         ha-card child, so ":host(.fit-rows) ha-card > div" lands on the
+         wrapper instead. Pass the fill on to the column inside it. */
+      :host(.fit-rows) .titled-single > .card-column { flex: 1 1 auto; min-height: 0; }
       .multi-columns { display: flex; gap: 0; align-items: stretch; }
       .multi-columns .card-column { flex: 1; min-width: 240px; border-right: 1px solid var(--todo-divider); }
       .multi-columns .card-column:last-child { border-right: none; }
@@ -8595,6 +8647,225 @@ class HomeTasksCard extends HTMLElement {
       .task-anim-enter {
         animation: task-enter 0.22s ease-out;
       }
+
+      /* --- E-ink mode -------------------------------------------------
+         Root config key "eink: true" puts an .eink class on the host (see
+         _updateEink). Everything here is scoped to :host(.eink) because
+         _getStyles() is built once, without ever seeing the config, and
+         cached in this._styleEl — nothing can be emitted conditionally.
+         Fine-tuning goes through the --ht-eink-* properties, the same
+         theme-hook trick the task title already uses (card-mod cannot
+         reach into this shadow root).
+
+         A greyscale panel has no hue and a slow, ghosting refresh, so:
+         colour carries no meaning (weight and border width do), everything
+         sits on white, and nothing animates. */
+      :host(.eink) {
+        /* Public knobs, resolved once into short internal aliases so each
+           fallback is written in exactly one place. */
+        --ht-e-bg: var(--ht-eink-bg, #ffffff);
+        --ht-e-fg: var(--ht-eink-fg, #000000);
+        --ht-e-muted: var(--ht-eink-muted, #4a4a4a);
+        --ht-e-border: var(--ht-eink-border, #555555);
+        --ht-e-img: var(--ht-eink-image-filter, grayscale(1) contrast(1.2));
+
+        /* Repoint the card's own palette (declared on :host, which this
+           beats) plus the HA tokens the rules below read directly. One
+           block kills most of the colour; the literal rgba() rules that
+           bypass both still need their own overrides further down. */
+        --todo-primary: var(--ht-e-fg);
+        --todo-bg: var(--ht-e-bg);
+        --todo-text: var(--ht-e-fg);
+        --todo-secondary-text: var(--ht-e-muted);
+        --todo-divider: var(--ht-e-border);
+        --todo-surface: var(--ht-e-bg);
+        --todo-disabled: var(--ht-e-muted);
+        --todo-error: var(--ht-e-fg);
+        --todo-success: var(--ht-e-fg);
+        --primary-color: var(--ht-e-fg);
+        --error-color: var(--ht-e-fg);
+        --warning-color: var(--ht-e-fg);
+        --success-color: var(--ht-e-fg);
+        --info-color: var(--ht-e-fg);
+        --primary-text-color: var(--ht-e-fg);
+        --secondary-text-color: var(--ht-e-muted);
+        --disabled-text-color: var(--ht-e-muted);
+        --divider-color: var(--ht-e-border);
+        --outline-color: var(--ht-e-border);
+        --card-background-color: var(--ht-e-bg);
+        --ha-card-background: var(--ht-e-bg);
+        --primary-background-color: var(--ht-e-bg);
+        --secondary-background-color: var(--ht-e-bg);
+        --rgb-primary-text-color: 0, 0, 0;
+        --rgb-primary-color: 0, 0, 0;
+        --ha-card-box-shadow: none;
+        --ha-card-border-color: var(--ht-e-border);
+      }
+
+      /* Surfaces: task rows and tiles on white, in list and tile mode alike */
+      :host(.eink) ha-card { box-shadow: none; }
+      :host(.eink) .task {
+        background: var(--ht-e-bg); /* was rgba(--rgb-primary-text-color, .06) */
+        border-color: var(--ht-e-border);
+        box-shadow: none;
+      }
+      :host(.eink) .task-tile {
+        background: var(--ht-e-bg); border-color: var(--ht-e-border); box-shadow: none;
+      }
+      :host(.eink) .task-tile:hover,
+      :host(.eink) .task-tile.armed { transform: none; box-shadow: none; }
+      :host(.eink) .task-tile.selected { outline-color: var(--ht-e-fg); }
+      :host(.eink) .tile-placeholder {
+        background: var(--ht-e-bg); /* was a 135deg gradient */
+        color: var(--ht-e-muted);
+      }
+      :host(.eink) .multi-columns .card-column { border-right-color: var(--ht-e-border); }
+      :host(.eink) .task-details { border-top-color: var(--ht-e-border); }
+      :host(.eink) .checkmark { border-color: var(--ht-e-fg); border-width: 2px; }
+      :host(.eink) .checkbox-container input:checked ~ .checkmark::after { border-color: var(--ht-e-bg); }
+
+      /* Photos: flattened, and never behind a dark scrim */
+      :host(.eink) .tile-bg,
+      :host(.eink) .task-thumb,
+      :host(.eink) .task-image,
+      :host(.eink) img.person-avatar { filter: var(--ht-e-img); }
+      :host(.eink) .person-avatar.initials {
+        background: var(--ht-e-fg) !important; /* set inline by _buildInitialsAvatar */
+        color: var(--ht-e-bg);
+      }
+      /* A caption bar, not a gradient: a translucent black scrim renders as a
+         muddy band on a 16-grey panel and swallows the title. The
+         :not(.has-image) variant is repeated because it ties on specificity,
+         so the override must not depend on source order. */
+      :host(.eink) .tile-overlay,
+      :host(.eink) .task-tile:not(.has-image) .tile-overlay {
+        background: var(--ht-e-bg);
+        border-top: 1px solid var(--ht-e-border);
+        padding: 5px 7px; /* was 24px 9px 9px — runway for the gradient */
+      }
+      :host(.eink) .tile-title,
+      :host(.eink) .task-tile:not(.has-image) .tile-title {
+        color: var(--ht-e-fg); text-shadow: none;
+      }
+      :host(.eink) .tile-done-badge {
+        background: var(--ht-e-bg); color: var(--ht-e-fg);
+        border: 2px solid var(--ht-e-fg); box-sizing: border-box;
+      }
+
+      /* Completed: struck through, not faded. 50% opacity is a pale smudge on
+         e-ink; a 2px rule through full-contrast text is not. */
+      :host(.eink) .task.completed .task-title {
+        color: var(--ht-e-fg); text-decoration: line-through; text-decoration-thickness: 2px;
+      }
+      :host(.eink) .task.completed .task-thumb { opacity: 1; }
+      :host(.eink) .task-tile.completed { opacity: 1; }
+      :host(.eink) .task-tile.completed .tile-title {
+        text-decoration: line-through; text-decoration-thickness: 2px;
+      }
+      :host(.eink) .task.dragging,
+      :host(.eink) .task-tile.dragging { opacity: 1; border-style: dashed; border-width: 2px; }
+
+      /* Chips: one monochrome shape. Deliberately sets no padding, display or
+         font-size — .compact and .avatar-only own those, and :host(.eink)
+         counts as two classes so it would otherwise outrank them. */
+      :host(.eink) .sub-badge,
+      :host(.eink) .due-date,
+      :host(.eink) .priority-badge,
+      :host(.eink) .recurrence-badge,
+      :host(.eink) .assigned-badge,
+      :host(.eink) .tag-badge,
+      :host(.eink) .reminder-badge,
+      :host(.eink) .tag-item,
+      :host(.eink) .tag-chip,
+      :host(.eink) .person-chip {
+        background: var(--ht-e-bg);
+        border: 1px solid var(--ht-e-border);
+        color: var(--ht-e-fg);
+        font-weight: 500;
+      }
+      :host(.eink) .filter-btn { border: 1px solid var(--ht-e-border); color: var(--ht-e-fg); }
+      :host(.eink) .sort-btn { border-color: var(--ht-e-border); color: var(--ht-e-fg); }
+      /* Restore the two chip shapes that are not boxes: the section-header
+         count is bare text, avatar-only badges are a bare round image. */
+      :host(.eink) .section-header .sub-badge { background: transparent; border: none; padding: 0; }
+      :host(.eink) .assigned-badge.avatar-only,
+      :host(.eink) .person-chip.avatar-only { background: none; border: none; padding: 0; }
+      :host(.eink) .assigned-badge.avatar-only.active .person-avatar,
+      :host(.eink) .person-chip.avatar-only.active .person-avatar { box-shadow: 0 0 0 2px var(--ht-e-fg); }
+      /* Urgency = weight + border width. A 16-grey panel collapses red,
+         orange and blue to the same mid grey. */
+      :host(.eink) .due-date.overdue,
+      :host(.eink) .priority-badge.pri-high {
+        border: 2px solid var(--ht-e-fg); color: var(--ht-e-fg); font-weight: 700;
+      }
+      :host(.eink) .due-date.today,
+      :host(.eink) .priority-badge.pri-medium { border-color: var(--ht-e-fg); font-weight: 700; }
+      :host(.eink) .priority-badge.pri-low { border-color: var(--ht-e-border); }
+      /* "Selected" inverts to solid ink — with no hue that is the only
+         unmistakable on/off signal. */
+      :host(.eink) .tag-badge.active,
+      :host(.eink) .assigned-badge.active,
+      :host(.eink) .tag-chip.active,
+      :host(.eink) .person-chip.active,
+      :host(.eink) .filter-btn.active,
+      :host(.eink) .priority-btn.pri-3.active,
+      :host(.eink) .priority-btn.pri-2.active,
+      :host(.eink) .priority-btn.pri-1.active,
+      :host(.eink) .tag-autocomplete-item.highlighted {
+        background: var(--ht-e-fg); color: var(--ht-e-bg);
+        border-color: var(--ht-e-fg); font-weight: 700;
+      }
+      :host(.eink) .tag-chip:hover,
+      :host(.eink) .person-chip:hover,
+      :host(.eink) .tag-badge:hover,
+      :host(.eink) .assigned-badge:hover,
+      :host(.eink) .task-thumb:hover { background: var(--ht-e-bg); opacity: 1; transform: none; }
+      :host(.eink) .mic-btn.recording { background: var(--ht-e-fg); }
+
+      /* Titles: composes with the --ht-task-title-* theme hooks rather than
+         replacing them. Scoped to :host(.eink) on purpose — leaving the base
+         .task-title rule a plain font-size keeps a theme value like "large"
+         or "1.2rem" working (calc(large * 1.3) is invalid at computed-value
+         time and would fall back to inherit). */
+      :host(.eink) .task-title {
+        font-size: calc(var(--ht-task-title-font-size, 14px) * var(--ht-eink-title-scale, 1.3));
+      }
+      /* .compact .task-title / .compact .tile-title already ignore the theme
+         hook (fixed 13px / 11px); keep that, just scale it. */
+      :host(.eink) .compact .task-title { font-size: calc(13px * var(--ht-eink-title-scale, 1.3)); }
+      :host(.eink) .tile-title { font-size: calc(12px * var(--ht-eink-title-scale, 1.3)); }
+      :host(.eink) .compact .tile-title { font-size: calc(11px * var(--ht-eink-title-scale, 1.3)); }
+
+      /* Flat chrome: no shadows, light backdrops */
+      :host(.eink) .sort-dropdown,
+      :host(.eink) .tag-autocomplete-dropdown,
+      :host(.eink) .task-detail-sheet,
+      :host(.eink) dialog.mb-dialog,
+      :host(.eink) dialog.ht-confirm,
+      :host(.eink) .toast-error { box-shadow: none; border: 1px solid var(--ht-e-border); }
+      :host(.eink) .toast-error { background: var(--ht-e-bg); color: var(--ht-e-fg); }
+      :host(.eink) .task-detail-backdrop,
+      :host(.eink) dialog.mb-dialog::backdrop,
+      :host(.eink) dialog.ht-confirm::backdrop { background: rgba(0, 0, 0, 0.12); }
+
+      /* No motion. This is the prefers-reduced-motion reset, NOT
+         "animation: none; transition: none": several flows in this card only
+         advance when transitionend/animationend fires, and those events are
+         not dispatched for a zero duration — _animateExpandedDetails releasing
+         height:auto has no fallback timer at all, and _applyFlip's per-element
+         cleanup would leave stale transforms. 0.01ms still fires them,
+         imperceptibly. !important is required because several of those
+         durations are written as inline styles from JS. */
+      :host(.eink) *,
+      :host(.eink) *::before,
+      :host(.eink) *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+        scroll-behavior: auto !important;
+      }
     `;
   }
 
@@ -8620,6 +8891,15 @@ class HomeTasksCard extends HTMLElement {
     let rows = "";
     try { rows = (getComputedStyle(this).getPropertyValue("--row-size") || "").trim(); } catch (_) { /* detached */ }
     this.classList.toggle("fit-rows", rows !== "" && rows !== "auto");
+  }
+
+  // Sibling of _updateFitRows: a config-driven host class, because
+  // _getStyles() is built and cached once without ever seeing the config,
+  // so every mode-dependent rule has to be class-scoped (:host(.eink)).
+  // Not called from connectedCallback — unlike --row-size there is nothing
+  // to re-derive on reattach, classList survives it.
+  _updateEink() {
+    this.classList.toggle("eink", this._config?.eink === true);
   }
 
   // card-mod compatibility (issues #31 / #34). card-mod normally styles us
@@ -9200,8 +9480,15 @@ class HomeTasksCardEditor extends HTMLElement {
     // Normalize old single-list format
     // Keep HA card-level keys (type, etc.) at root, not inside column objects
     if (config.list_id && !config.columns) {
-      const { type, columns: _c, ...colConfig } = config;
-      config = { ...(type ? { type } : {}), columns: [colConfig] };
+      // Card-level keys stay at the root; everything else describes the single
+      // column. `title` is deliberately NOT pulled out — in the flat format it
+      // named the column, and _getListName still reads col.title.
+      const { type, columns: _c, eink, ...colConfig } = config;
+      config = {
+        ...(type ? { type } : {}),
+        ...(eink !== undefined ? { eink } : {}),
+        columns: [colConfig],
+      };
     }
     if (!config.columns || !Array.isArray(config.columns) || config.columns.length === 0) {
       config = { ...config, columns: [{}] };
@@ -9274,6 +9561,7 @@ class HomeTasksCardEditor extends HTMLElement {
       :host { display: block; }
       .editor { display: flex; flex-direction: column; gap: 0; padding: 16px 0; }
       .editor-card-title-row { margin-bottom: 12px; }
+      .editor-card-eink-row { display: flex; flex-direction: column; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--divider-color, rgba(127,127,127,0.2)); }
       .editor-native-select {
         width: 100%; box-sizing: border-box; padding: 8px;
         background: var(--card-background-color); color: var(--primary-text-color);
@@ -9428,6 +9716,28 @@ class HomeTasksCardEditor extends HTMLElement {
     });
     const cardTitleRow = this._el("div", { className: "editor-card-title-row" }, [cardTitleInput]);
 
+    // Card-level, not per-column: the same switch drives every column, so it
+    // sits above the tab bar with the card title rather than inside a tab.
+    // Root-level plumbing, like the title field above — makeToggle/updateCol
+    // would write it into columns[tabIdx], where the card never looks for it.
+    const einkSw = document.createElement("ha-switch");
+    einkSw.checked = this._config.eink === true;
+    einkSw.setAttribute("aria-label", this._t("ed_eink"));
+    einkSw.addEventListener("change", () => {
+      this._config = { ...this._config, eink: einkSw.checked || undefined };
+      this._fireChanged();
+      // No this._render(): _ignoreNextSetConfig already swallows the echo, the
+      // switch shows its own new state, and a rebuild would collapse every
+      // open <details> section and lose the scroll position.
+    });
+    const einkRow = this._el("div", { className: "editor-card-eink-row" }, [
+      this._el("div", { className: "toggle-row" }, [
+        this._el("span", { className: "toggle-label", textContent: this._t("ed_eink") }),
+        einkSw,
+      ]),
+      this._el("span", { className: "hint", textContent: this._t("ed_eink_hint") }),
+    ]);
+
 
     // Tab bar (tabs on left, + on right)
     const tabsEl = this._el("div", { className: "editor-tabs" });
@@ -9542,7 +9852,7 @@ class HomeTasksCardEditor extends HTMLElement {
     // The AI settings used to sit in their own section at the bottom, which
     // is not where anyone looks for them — everything about images is in the
     // column's "Images" section now.
-    const editor = this._el("div", { className: "editor" }, [cardTitleRow, tabsRow, controls, tabContent]);
+    const editor = this._el("div", { className: "editor" }, [cardTitleRow, einkRow, tabsRow, controls, tabContent]);
     root.appendChild(editor);
   }
 

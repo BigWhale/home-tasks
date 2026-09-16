@@ -126,6 +126,8 @@ Set a column's **view mode** to **Tiles** for a compact, visual grid instead of 
 - **Long-press** (or click & hold) a tile to open its **detail sheet** — the full editor with every field, including an editable title
 - **Drag** a tile to reorder, with the same live animations as the list view
 
+On e-paper panels, [`eink: true`](#e-ink-displays) replaces the gradient overlay with a solid caption bar so the title stays legible over any image.
+
 #### Voice Input
 
 A mic button on the add-task row lets you dictate a task title instead of typing it. It uses Home Assistant's **Assist speech-to-text** when available and falls back to the browser's built-in speech recognition. Hide the button per column with `show_voice: false`.
@@ -323,7 +325,8 @@ These options live at the **root** of the card config, not inside a column.
 | Option | Default | Description |
 |--------|---------|-------------|
 | `columns` | — | List of column configs (required) |
-| `title` | — | Optional card title shown above the columns |
+| `title` | — | Optional card title shown above the columns. Applies to single-column cards too, where it sits above the column's own header — set `show_title: false` on the column if you want only one heading |
+| `eink` | `false` | [E-ink friendly rendering](#e-ink-displays) for e-paper panels: white task and tile backgrounds, outlined monochrome chips, larger titles, no animation |
 | `image_generation.entity_id` | — | An `ai_task.*` entity used to generate task images |
 | `image_generation.prompt_prefix` | — | Text prepended to every AI image prompt (e.g. `Minimalist icon of`) |
 | `grid_options` | — | Standard HA grid sizing (e.g. `columns: 36`, `rows: auto`) |
@@ -382,6 +385,51 @@ For a theme-wide setting, the task title also exposes CSS custom properties that
 my_theme:
   ht-task-title-font-family: "'Comic Neue', cursive"
   ht-task-title-font-size: 16px
+```
+
+### E-ink displays
+
+E-paper panels (Inkplate, Kindle dashboards, TRMNL and friends) render greyscale, so the
+card's default look works against them: task rows sit on a faint grey wash, chips carry
+their meaning in hue alone, and the animations ghost on a slow refresh.
+
+Set `eink: true` at the root of the card config — or flip **E-ink mode** at the top of the
+visual editor — and the card switches to a high-contrast treatment:
+
+```yaml
+type: custom:home-tasks-card
+title: Today at Home
+eink: true
+columns:
+  - list_id: chores
+```
+
+- Task rows and tiles sit on white in **both** list and tile view — in tiles, the caption becomes a solid bar instead of a dark gradient over the photo, and images are flattened to greyscale
+- Chips lose their tinted fill and become monochrome outlines; overdue and high-priority get a heavier border and bold text, so urgency still reads without colour
+- Task titles are 30% larger
+- Completed tasks are struck through rather than faded out
+- Animations are damped
+
+Everything is tunable through CSS custom properties, in a theme or per card via card-mod:
+
+| Variable | Default |
+|----------|---------|
+| `--ht-eink-bg` | `#ffffff` |
+| `--ht-eink-fg` | `#000000` |
+| `--ht-eink-muted` | `#4a4a4a` |
+| `--ht-eink-border` | `#555555` |
+| `--ht-eink-title-scale` | `1.3` |
+| `--ht-eink-image-filter` | `grayscale(1) contrast(1.2)` |
+
+`--ht-eink-title-scale` multiplies `--ht-task-title-font-size`, so the two compose — set
+both to pick an exact size. To drop tile photos altogether rather than flatten them, use
+the column's `show_images: false`.
+
+```yaml
+# themes.yaml — a slightly softer panel
+my_eink_theme:
+  ht-eink-border: "#333333"
+  ht-eink-title-scale: 1.5
 ```
 
 ---
