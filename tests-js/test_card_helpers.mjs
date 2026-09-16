@@ -441,13 +441,24 @@ describe('theme hooks (issue #31)', () => {
     const card = await makeCard();
     const css = card._getStyles();
     for (const v of ['--ht-eink-bg', '--ht-eink-fg', '--ht-eink-muted', '--ht-eink-border',
-                     '--ht-eink-title-scale', '--ht-eink-image-filter']) {
+                     '--ht-eink-title-scale', '--ht-eink-image-filter',
+                     '--ht-eink-row-scale', '--ht-eink-row-gap']) {
       assert.ok(css.includes(`var(${v},`), `${v} must be declared with a fallback`);
     }
-    // Black on white, and the 30% title bump the e-paper panel needs.
+    // Black on white, and the doubled row the e-paper panel needs.
     assert.ok(css.includes('var(--ht-eink-bg, #ffffff)'));
     assert.ok(css.includes('var(--ht-eink-fg, #000000)'));
-    assert.ok(css.includes('var(--ht-eink-title-scale, 1.3)'));
+    assert.ok(css.includes('var(--ht-eink-row-scale, 2)'));
+    assert.ok(css.includes('var(--ht-eink-row-gap, 20px)'));
+  });
+
+  test('the title scale falls through to the row scale, so one dial moves the whole row', async () => {
+    const card = await makeCard();
+    const css = card._getStyles();
+    // Set neither and the title doubles with everything else; set
+    // --ht-eink-row-scale and the title follows; set --ht-eink-title-scale
+    // and it wins for the title alone.
+    assert.ok(css.includes('--ht-e-ts: var(--ht-eink-title-scale, var(--ht-eink-row-scale, 2));'));
   });
 
   test('the e-ink title scale composes with the theme hook rather than replacing it', async () => {
@@ -457,7 +468,7 @@ describe('theme hooks (issue #31)', () => {
     // so the base .task-title rule keeps its plain font-size and e-ink
     // multiplies it in a separate, more specific rule.
     assert.ok(css.includes(
-      'font-size: calc(var(--ht-task-title-font-size, 14px) * var(--ht-eink-title-scale, 1.3));'));
+      'font-size: calc(var(--ht-task-title-font-size, 14px) * var(--ht-e-ts));'));
     assert.ok(css.includes('font-size: var(--ht-task-title-font-size, 14px);'),
       'base rule must stay a plain font-size (calc() of a keyword is invalid)');
   });

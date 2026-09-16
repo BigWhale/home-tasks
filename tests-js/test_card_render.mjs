@@ -2071,17 +2071,113 @@ describe('e-ink mode', () => {
       'must not blanket-disable animations');
   });
 
-  test('the generic chip rule leaves padding and sizing to .compact', async () => {
+  test('the monochrome chip rule leaves padding and sizing to .compact', async () => {
     // :host(.eink) counts as two classes, so a padding/font-size here would
-    // outrank ".compact .sub-badge" and silently undo compact mode.
+    // outrank ".compact .sub-badge" and silently undo compact mode. Sizing
+    // lives in a separate later rule that writes its own .compact twin —
+    // anchor on the colour declaration so this pin can't drift onto it.
     const card = await setup({ eink: true, columns: [{ list_id: 'L1' }] });
     const css = card._getStyles();
-    const chipRule = css.match(
-      /:host\(\.eink\) \.sub-badge,[\s\S]*?\{([\s\S]*?)\}/);
-    assert.ok(chipRule, 'generic chip rule present');
+    const rules = [...css.matchAll(
+      /:host\(\.eink\) \.sub-badge,[\s\S]*?\{([\s\S]*?)\}/g)].map((m) => m[1]);
+    const colourRule = rules.find((body) => body.includes('background: var(--ht-e-bg)'));
+    assert.ok(colourRule, 'monochrome chip rule present');
     for (const prop of ['padding', 'display', 'font-size']) {
-      assert.ok(!new RegExp(`\\b${prop}\\s*:`).test(chipRule[1]),
-        `generic chip rule must not set ${prop}`);
+      assert.ok(!new RegExp(`\\b${prop}\\s*:`).test(colourRule),
+        `monochrome chip rule must not set ${prop}`);
+    }
+  });
+});
+
+// The e-ink row geometry (--ht-eink-row-scale / --ht-eink-row-gap). jsdom
+// applies no shadow-DOM stylesheet, so these check what _getStyles() emits.
+describe('e-ink row geometry', () => {
+  async function setup(config) {
+    const { HomeTasksCard } = await loadCard({ force: true });
+    const card = new HomeTasksCard();
+    card.setConfig(config);
+    return card;
+  }
+  const styles = async () => (await setup({ eink: true, columns: [{ list_id: 'L1' }] }))._getStyles();
+
+  // Take the body of the LAST rule whose selector list matches, so a
+  // colour rule earlier in the block never stands in for a sizing one.
+  // The geometry section with its comments stripped, so prose naming a
+  // selector is not mistaken for a rule targeting it.
+  const geometryBlock = (css) =>
+    css.slice(css.indexOf('/* Geometry:'), css.indexOf('/* Titles:'))
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+
+  const ruleBody = (css, selector) => {
+    const esc = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const found = [...css.matchAll(new RegExp(`${esc}[^{}]*\\{([^}]*)\\}`, 'g'))];
+    return found.length ? found[found.length - 1][1] : null;
+  };
+
+  test('the row scales off --ht-e-rs and the gap off --ht-e-gap', async () => {
+    const css = await styles();
+    const row = ruleBody(css, ':host(.eink) .task-main');
+    assert.ok(row, ':host(.eink) .task-main rule present');
+    assert.match(row, /padding:\s*calc\(10px \* var\(--ht-e-rs\)\) calc\(12px \* var\(--ht-e-rs\)\);/);
+    assert.match(row, /min-height:\s*calc\(44px \* var\(--ht-e-rs\)\);/);
+    // The gap is its own knob: the checkbox needs air the row padding can't give.
+    assert.match(row, /gap:\s*var\(--ht-e-gap\);/);
+  });
+
+  test('every geometry value is a calc() on the scale, never a baked-in double', async () => {
+    const css = await styles();
+    const block = geometryBlock(css);
+    assert.ok(block.length > 500, 'geometry block present');
+    for (const [, decl] of block.matchAll(/^\s*((?:padding|min-height|width|height|font-size|gap|border-radius|border-width|--mdc-icon-size)\s*:[^;]+);/gm)) {
+      assert.ok(/var\(--ht-e-(rs|gap)\)/.test(decl),
+        `geometry declaration must scale, got "${decl.trim()}"`);
+    }
+  });
+
+  // Without these twins the change is silently wrong rather than broken:
+  // ":host(.eink) X" (0,3,0) outranks ".compact X" (0,2,0), so compact mode
+  // would inflate to full size.
+  for (const sel of ['.task-list', '.task-main', '.checkmark', '.task-meta',
+                     '.task-thumb', '.expand-btn', '.expand-btn ha-icon',
+                     '.sub-badge', '.assigned-badge .person-avatar']) {
+    test(`:host(.eink) ${sel} has a .compact twin`, async () => {
+      const css = await styles();
+      assert.ok(css.includes(`:host(.eink) ${sel}`), `plain rule for ${sel}`);
+      assert.ok(css.includes(`:host(.eink) .compact ${sel}`), `.compact twin for ${sel}`);
+    });
+  }
+
+  test('the subtask checkbox keeps its own size despite the specificity tie', async () => {
+    // ".checkbox-container.small .checkmark" is (0,3,0) and so is
+    // ":host(.eink) .checkmark" — the e-ink block wins on source order, so
+    // without this rule a subtask checkbox jumps to the row checkbox's size.
+    const css = await styles();
+    assert.ok(css.includes(':host(.eink) .checkbox-container.small .checkmark'));
+    assert.ok(css.includes(':host(.eink) .checkbox-container.small input:checked ~ .checkmark::after'));
+  });
+
+  test('the avatar-only badge keeps its own size despite the specificity tie', async () => {
+    // Same tie: ".assigned-badge.avatar-only .person-avatar" is (0,3,0).
+    const css = await styles();
+    assert.ok(css.includes(':host(.eink) .assigned-badge.avatar-only .person-avatar'));
+  });
+
+  test('the section-header count keeps a size of its own', async () => {
+    // It is bare text, not a chip; the (0,4,0) restore rule has to carry the
+    // font-size or the (0,3,0) chip sizing rule sets it.
+    const css = await styles();
+    const body = ruleBody(css, ':host(.eink) .section-header .sub-badge');
+    assert.ok(body, 'section-header count rule present');
+    assert.match(body, /font-size:\s*calc\(11px \* var\(--ht-e-rs\)\);/);
+  });
+
+  test('the column filter chips are left out of the row sizing', async () => {
+    // .tag-chip / .person-chip / .tag-item are the column's filter rows, not
+    // list items — they take the monochrome treatment but not the scale.
+    const css = await styles();
+    const block = geometryBlock(css);
+    for (const sel of ['.tag-chip', '.person-chip', '.tag-item']) {
+      assert.ok(!block.includes(sel), `${sel} must not be scaled with the row`);
     }
   });
 });

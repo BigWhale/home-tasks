@@ -8668,6 +8668,11 @@ class HomeTasksCard extends HTMLElement {
         --ht-e-muted: var(--ht-eink-muted, #4a4a4a);
         --ht-e-border: var(--ht-eink-border, #555555);
         --ht-e-img: var(--ht-eink-image-filter, grayscale(1) contrast(1.2));
+        --ht-e-rs: var(--ht-eink-row-scale, 2);
+        --ht-e-gap: var(--ht-eink-row-gap, 20px);
+        /* The title has its own dial, but falls back to the row scale so one
+           number moves the whole list item. */
+        --ht-e-ts: var(--ht-eink-title-scale, var(--ht-eink-row-scale, 2));
 
         /* Repoint the card's own palette (declared on :host, which this
            beats) plus the HA tokens the rules below read directly. One
@@ -8721,7 +8726,7 @@ class HomeTasksCard extends HTMLElement {
       }
       :host(.eink) .multi-columns .card-column { border-right-color: var(--ht-e-border); }
       :host(.eink) .task-details { border-top-color: var(--ht-e-border); }
-      :host(.eink) .checkmark { border-color: var(--ht-e-fg); border-width: 2px; }
+      :host(.eink) .checkmark { border-color: var(--ht-e-fg); } /* width: see Geometry */
       :host(.eink) .checkbox-container input:checked ~ .checkmark::after { border-color: var(--ht-e-bg); }
 
       /* Photos: flattened, and never behind a dark scrim */
@@ -8787,7 +8792,10 @@ class HomeTasksCard extends HTMLElement {
       :host(.eink) .sort-btn { border-color: var(--ht-e-border); color: var(--ht-e-fg); }
       /* Restore the two chip shapes that are not boxes: the section-header
          count is bare text, avatar-only badges are a bare round image. */
-      :host(.eink) .section-header .sub-badge { background: transparent; border: none; padding: 0; }
+      :host(.eink) .section-header .sub-badge {
+        background: transparent; border: none; padding: 0;
+        font-size: calc(11px * var(--ht-e-rs)); /* beats the chip sizing rule below */
+      }
       :host(.eink) .assigned-badge.avatar-only,
       :host(.eink) .person-chip.avatar-only { background: none; border: none; padding: 0; }
       :host(.eink) .assigned-badge.avatar-only.active .person-avatar,
@@ -8822,19 +8830,141 @@ class HomeTasksCard extends HTMLElement {
       :host(.eink) .task-thumb:hover { background: var(--ht-e-bg); opacity: 1; transform: none; }
       :host(.eink) .mic-btn.recording { background: var(--ht-e-fg); }
 
+      /* Geometry: the whole list item scales by --ht-e-rs (default 2). A row
+         sized for a mouse is a cramped grey strip on a 10" panel read from
+         across the room.
+
+         Every value is calc(<the literal from the base rule> * --ht-e-rs), so
+         the rules say where they came from and one dial retunes the lot.
+
+         Each rule below is paired with a ":host(.eink) .compact" twin, and the
+         checkbox with a ".small" one. That is not redundancy: ":host(.eink) X"
+         is (0,3,0) — the pseudo-class counts with its argument (css-scoping-1
+         §3.1) — so it OUTRANKS ".compact X" (0,2,0) and TIES
+         ".checkbox-container.small .checkmark" (0,3,0), winning on source
+         order. Without the twin, compact mode silently inflates to full size
+         and subtask checkboxes jump to the row checkbox's size. Same trap as
+         the chip rule above and .tile-overlay below. */
+
+      /* Rows */
+      :host(.eink) .task-list,
+      :host(.eink) .section-body { gap: calc(6px * var(--ht-e-rs)); }
+      :host(.eink) .compact .task-list { gap: calc(3px * var(--ht-e-rs)); }
+      :host(.eink) .task-main {
+        padding: calc(10px * var(--ht-e-rs)) calc(12px * var(--ht-e-rs));
+        min-height: calc(44px * var(--ht-e-rs));
+        gap: var(--ht-e-gap);
+      }
+      :host(.eink) .compact .task-main {
+        padding: calc(6px * var(--ht-e-rs)) calc(8px * var(--ht-e-rs));
+        min-height: calc(32px * var(--ht-e-rs));
+        gap: var(--ht-e-gap);
+      }
+      :host(.eink) .task-content { gap: calc(2px * var(--ht-e-rs)); }
+
+      /* Checkbox. No box-sizing anywhere in this card, so .checkmark is
+         content-box: at scale 2 it paints 40px plus a 4px border each side. */
+      :host(.eink) .checkmark {
+        height: calc(20px * var(--ht-e-rs)); width: calc(20px * var(--ht-e-rs));
+        border-width: calc(2px * var(--ht-e-rs)); border-radius: calc(4px * var(--ht-e-rs));
+      }
+      :host(.eink) .compact .checkmark,
+      :host(.eink) .checkbox-container.small .checkmark {
+        height: calc(16px * var(--ht-e-rs)); width: calc(16px * var(--ht-e-rs));
+      }
+      :host(.eink) .checkbox-container input:checked ~ .checkmark::after {
+        width: calc(5px * var(--ht-e-rs)); height: calc(9px * var(--ht-e-rs));
+        border-width: 0 calc(2px * var(--ht-e-rs)) calc(2px * var(--ht-e-rs)) 0;
+        margin-top: calc(-1px * var(--ht-e-rs));
+      }
+      :host(.eink) .compact .checkbox-container input:checked ~ .checkmark::after,
+      :host(.eink) .checkbox-container.small input:checked ~ .checkmark::after {
+        width: calc(4px * var(--ht-e-rs)); height: calc(7px * var(--ht-e-rs));
+      }
+
+      /* Meta chips. Sizing lives here and not in the monochrome chip rule
+         above, which must keep setting no padding/display/font-size — the
+         .compact twin it would trample is written out below instead. The
+         column's own filter chips (.tag-chip, .person-chip, .tag-item) are
+         deliberately absent: they are not part of a list item. */
+      :host(.eink) .task-meta { gap: calc(6px * var(--ht-e-rs)); }
+      :host(.eink) .compact .task-meta { gap: calc(4px * var(--ht-e-rs)); }
+      :host(.eink) .sub-badge,
+      :host(.eink) .due-date,
+      :host(.eink) .priority-badge,
+      :host(.eink) .recurrence-badge,
+      :host(.eink) .assigned-badge,
+      :host(.eink) .tag-badge,
+      :host(.eink) .reminder-badge {
+        font-size: calc(11px * var(--ht-e-rs));
+        padding: calc(2px * var(--ht-e-rs)) calc(8px * var(--ht-e-rs));
+        border-radius: calc(10px * var(--ht-e-rs));
+      }
+      :host(.eink) .compact .sub-badge,
+      :host(.eink) .compact .due-date,
+      :host(.eink) .compact .priority-badge,
+      :host(.eink) .compact .recurrence-badge,
+      :host(.eink) .compact .assigned-badge,
+      :host(.eink) .compact .tag-badge,
+      :host(.eink) .compact .reminder-badge {
+        font-size: calc(10px * var(--ht-e-rs));
+        padding: calc(1px * var(--ht-e-rs)) calc(6px * var(--ht-e-rs));
+      }
+      :host(.eink) .assigned-badge.with-avatar {
+        gap: calc(5px * var(--ht-e-rs));
+        padding: calc(2px * var(--ht-e-rs)) calc(8px * var(--ht-e-rs))
+                 calc(2px * var(--ht-e-rs)) calc(3px * var(--ht-e-rs));
+      }
+      :host(.eink) .assigned-badge .person-avatar {
+        width: calc(16px * var(--ht-e-rs)); height: calc(16px * var(--ht-e-rs));
+        font-size: calc(9px * var(--ht-e-rs));
+      }
+      :host(.eink) .assigned-badge.avatar-only .person-avatar {
+        width: calc(20px * var(--ht-e-rs)); height: calc(20px * var(--ht-e-rs));
+        font-size: calc(10px * var(--ht-e-rs));
+      }
+      :host(.eink) .compact .assigned-badge .person-avatar {
+        width: calc(14px * var(--ht-e-rs)); height: calc(14px * var(--ht-e-rs));
+        font-size: calc(8px * var(--ht-e-rs));
+      }
+
+      /* Thumbnail and the expand caret */
+      :host(.eink) .task-thumb {
+        width: calc(40px * var(--ht-e-rs)); height: calc(40px * var(--ht-e-rs));
+        border-radius: calc(6px * var(--ht-e-rs));
+      }
+      :host(.eink) .compact .task-thumb {
+        width: calc(30px * var(--ht-e-rs)); height: calc(30px * var(--ht-e-rs));
+        border-radius: calc(4px * var(--ht-e-rs));
+      }
+      :host(.eink) .expand-btn { padding: calc(4px * var(--ht-e-rs)); }
+      :host(.eink) .compact .expand-btn { padding: calc(2px * var(--ht-e-rs)); }
+      :host(.eink) .expand-btn ha-icon { --mdc-icon-size: calc(18px * var(--ht-e-rs)); }
+      :host(.eink) .compact .expand-btn ha-icon { --mdc-icon-size: calc(16px * var(--ht-e-rs)); }
+
+      /* Section headers ride along, or a 14px heading sits over 88px rows.
+         min-height stays 0 — the fit-rows layout depends on it. */
+      :host(.eink) .section-header {
+        font-size: calc(14px * var(--ht-e-rs));
+        padding: calc(2px * var(--ht-e-rs)) calc(4px * var(--ht-e-rs));
+        gap: calc(6px * var(--ht-e-rs));
+      }
+      :host(.eink) .section-header ha-icon,
+      :host(.eink) .section-header .section-caret { --mdc-icon-size: calc(16px * var(--ht-e-rs)); }
+
       /* Titles: composes with the --ht-task-title-* theme hooks rather than
          replacing them. Scoped to :host(.eink) on purpose — leaving the base
          .task-title rule a plain font-size keeps a theme value like "large"
-         or "1.2rem" working (calc(large * 1.3) is invalid at computed-value
+         or "1.2rem" working (calc(large * 2) is invalid at computed-value
          time and would fall back to inherit). */
       :host(.eink) .task-title {
-        font-size: calc(var(--ht-task-title-font-size, 14px) * var(--ht-eink-title-scale, 1.3));
+        font-size: calc(var(--ht-task-title-font-size, 14px) * var(--ht-e-ts));
       }
       /* .compact .task-title / .compact .tile-title already ignore the theme
          hook (fixed 13px / 11px); keep that, just scale it. */
-      :host(.eink) .compact .task-title { font-size: calc(13px * var(--ht-eink-title-scale, 1.3)); }
-      :host(.eink) .tile-title { font-size: calc(12px * var(--ht-eink-title-scale, 1.3)); }
-      :host(.eink) .compact .tile-title { font-size: calc(11px * var(--ht-eink-title-scale, 1.3)); }
+      :host(.eink) .compact .task-title { font-size: calc(13px * var(--ht-e-ts)); }
+      :host(.eink) .tile-title { font-size: calc(12px * var(--ht-e-ts)); }
+      :host(.eink) .compact .tile-title { font-size: calc(11px * var(--ht-e-ts)); }
 
       /* Flat chrome: no shadows, light backdrops */
       :host(.eink) .sort-dropdown,
