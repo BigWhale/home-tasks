@@ -2039,6 +2039,16 @@ describe('e-ink mode', () => {
     assert.ok(!card.classList.contains('eink'));
   });
 
+  test('the expand caret is hidden by CSS, still built in the DOM', async () => {
+    // e-ink drops the caret (a static panel has no gesture for it), but only
+    // with display:none — the button has to stay, because the same config
+    // opened in a browser still expands through the row handler and
+    // _finishDrag queries ".expand-btn.expanded" to collapse rows.
+    const card = await setup({ eink: true, columns: [{ list_id: 'L1' }] });
+    assert.ok(card.shadowRoot.querySelector('.expand-btn'),
+      'e-ink hides the caret with CSS, it does not stop rendering it');
+  });
+
   test('the class follows a config change without waiting for a render', async () => {
     const card = await setup({ columns: [{ list_id: 'L1' }] });
     card.setConfig({ eink: true, columns: [{ list_id: 'L1' }] });
@@ -2137,8 +2147,10 @@ describe('e-ink row geometry', () => {
   // Without these twins the change is silently wrong rather than broken:
   // ":host(.eink) X" (0,3,0) outranks ".compact X" (0,2,0), so compact mode
   // would inflate to full size.
+  // .expand-btn is deliberately absent: it is hidden outright in e-ink mode,
+  // so there is no size for a twin to preserve. See the caret test below.
   for (const sel of ['.task-list', '.task-main', '.checkmark', '.task-meta',
-                     '.task-thumb', '.expand-btn', '.expand-btn ha-icon',
+                     '.task-thumb',
                      '.sub-badge', '.assigned-badge .person-avatar']) {
     test(`:host(.eink) ${sel} has a .compact twin`, async () => {
       const css = await styles();
@@ -2169,6 +2181,42 @@ describe('e-ink row geometry', () => {
     const body = ruleBody(css, ':host(.eink) .section-header .sub-badge');
     assert.ok(body, 'section-header count rule present');
     assert.match(body, /font-size:\s*calc\(11px \* var\(--ht-e-rs\)\);/);
+  });
+
+  test('the expand caret is hidden, not resized', async () => {
+    // A static panel has no gesture to open a details pane, and the caret
+    // costs a chip's worth of row width. Hiding it has to outrank the base
+    // ".expand-btn { display: inline-flex }" — :host(.eink) is (0,3,0), so
+    // it does. The sizing rules it replaced must be gone, or they are dead
+    // CSS pinned by a twin test that no longer applies.
+    const css = await styles();
+    assert.match(ruleBody(css, ':host(.eink) .expand-btn'), /display:\s*none;/);
+    assert.ok(!css.includes(':host(.eink) .compact .expand-btn'),
+      'the .compact twin must go with the rule it sized');
+    assert.ok(!css.includes(':host(.eink) .expand-btn ha-icon'),
+      'the caret icon sizing must go with it too');
+  });
+
+  test('chips scale down against the row, off their own knob', async () => {
+    // At the default row scale of 2 a chip would be 22px and crowd the
+    // title. Every chip declaration carries --ht-e-cs as well, so the row
+    // dial still moves them — 11px * 2 * 0.7 = 15.4px.
+    const css = await styles();
+    const chip = ruleBody(css, ':host(.eink) .reminder-badge');
+    assert.ok(chip, 'chip sizing rule present');
+    assert.match(chip, /font-size:\s*calc\(11px \* var\(--ht-e-rs\) \* var\(--ht-e-cs\)\);/);
+    assert.match(chip, /border-radius:\s*calc\(10px \* var\(--ht-e-rs\) \* var\(--ht-e-cs\)\);/);
+    // The gap between chips comes down with them, or the row looks sparse.
+    assert.match(ruleBody(css, ':host(.eink) .task-meta'),
+      /gap:\s*calc\(6px \* var\(--ht-e-rs\) \* var\(--ht-e-cs\)\);/);
+  });
+
+  test('the section-header count keeps the full row scale, not the chip scale', async () => {
+    // It is bare text sized to the heading, not a chip in the meta row —
+    // shrinking it with the chips would leave a 15px count on a 28px title.
+    const css = await styles();
+    const body = ruleBody(css, ':host(.eink) .section-header .sub-badge');
+    assert.ok(!body.includes('--ht-e-cs'), 'section count must not take the chip scale');
   });
 
   test('the column filter chips are left out of the row sizing', async () => {

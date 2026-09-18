@@ -8673,6 +8673,11 @@ class HomeTasksCard extends HTMLElement {
         /* The title has its own dial, but falls back to the row scale so one
            number moves the whole list item. */
         --ht-e-ts: var(--ht-eink-title-scale, var(--ht-eink-row-scale, 2));
+        /* Chips are the one part of a list item that does not want the full
+           row scale: at x2 a 22px pill competes with the title it annotates.
+           They ride --ht-e-rs and then come back down by this factor, so the
+           row dial still moves them — just less far. */
+        --ht-e-cs: var(--ht-eink-chip-scale, 0.7);
 
         /* Repoint the card's own palette (declared on :host, which this
            beats) plus the HA tokens the rules below read directly. One
@@ -8886,9 +8891,11 @@ class HomeTasksCard extends HTMLElement {
          above, which must keep setting no padding/display/font-size — the
          .compact twin it would trample is written out below instead. The
          column's own filter chips (.tag-chip, .person-chip, .tag-item) are
-         deliberately absent: they are not part of a list item. */
-      :host(.eink) .task-meta { gap: calc(6px * var(--ht-e-rs)); }
-      :host(.eink) .compact .task-meta { gap: calc(4px * var(--ht-e-rs)); }
+         deliberately absent: they are not part of a list item.
+         Every value here carries --ht-e-cs as well as --ht-e-rs, so the chip
+         row shrinks against the rest of the item rather than with it. */
+      :host(.eink) .task-meta { gap: calc(6px * var(--ht-e-rs) * var(--ht-e-cs)); }
+      :host(.eink) .compact .task-meta { gap: calc(4px * var(--ht-e-rs) * var(--ht-e-cs)); }
       :host(.eink) .sub-badge,
       :host(.eink) .due-date,
       :host(.eink) .priority-badge,
@@ -8896,9 +8903,9 @@ class HomeTasksCard extends HTMLElement {
       :host(.eink) .assigned-badge,
       :host(.eink) .tag-badge,
       :host(.eink) .reminder-badge {
-        font-size: calc(11px * var(--ht-e-rs));
-        padding: calc(2px * var(--ht-e-rs)) calc(8px * var(--ht-e-rs));
-        border-radius: calc(10px * var(--ht-e-rs));
+        font-size: calc(11px * var(--ht-e-rs) * var(--ht-e-cs));
+        padding: calc(2px * var(--ht-e-rs) * var(--ht-e-cs)) calc(8px * var(--ht-e-rs) * var(--ht-e-cs));
+        border-radius: calc(10px * var(--ht-e-rs) * var(--ht-e-cs));
       }
       :host(.eink) .compact .sub-badge,
       :host(.eink) .compact .due-date,
@@ -8907,28 +8914,28 @@ class HomeTasksCard extends HTMLElement {
       :host(.eink) .compact .assigned-badge,
       :host(.eink) .compact .tag-badge,
       :host(.eink) .compact .reminder-badge {
-        font-size: calc(10px * var(--ht-e-rs));
-        padding: calc(1px * var(--ht-e-rs)) calc(6px * var(--ht-e-rs));
+        font-size: calc(10px * var(--ht-e-rs) * var(--ht-e-cs));
+        padding: calc(1px * var(--ht-e-rs) * var(--ht-e-cs)) calc(6px * var(--ht-e-rs) * var(--ht-e-cs));
       }
       :host(.eink) .assigned-badge.with-avatar {
-        gap: calc(5px * var(--ht-e-rs));
-        padding: calc(2px * var(--ht-e-rs)) calc(8px * var(--ht-e-rs))
-                 calc(2px * var(--ht-e-rs)) calc(3px * var(--ht-e-rs));
+        gap: calc(5px * var(--ht-e-rs) * var(--ht-e-cs));
+        padding: calc(2px * var(--ht-e-rs) * var(--ht-e-cs)) calc(8px * var(--ht-e-rs) * var(--ht-e-cs))
+                 calc(2px * var(--ht-e-rs) * var(--ht-e-cs)) calc(3px * var(--ht-e-rs) * var(--ht-e-cs));
       }
       :host(.eink) .assigned-badge .person-avatar {
-        width: calc(16px * var(--ht-e-rs)); height: calc(16px * var(--ht-e-rs));
-        font-size: calc(9px * var(--ht-e-rs));
+        width: calc(16px * var(--ht-e-rs) * var(--ht-e-cs)); height: calc(16px * var(--ht-e-rs) * var(--ht-e-cs));
+        font-size: calc(9px * var(--ht-e-rs) * var(--ht-e-cs));
       }
       :host(.eink) .assigned-badge.avatar-only .person-avatar {
-        width: calc(20px * var(--ht-e-rs)); height: calc(20px * var(--ht-e-rs));
-        font-size: calc(10px * var(--ht-e-rs));
+        width: calc(20px * var(--ht-e-rs) * var(--ht-e-cs)); height: calc(20px * var(--ht-e-rs) * var(--ht-e-cs));
+        font-size: calc(10px * var(--ht-e-rs) * var(--ht-e-cs));
       }
       :host(.eink) .compact .assigned-badge .person-avatar {
-        width: calc(14px * var(--ht-e-rs)); height: calc(14px * var(--ht-e-rs));
-        font-size: calc(8px * var(--ht-e-rs));
+        width: calc(14px * var(--ht-e-rs) * var(--ht-e-cs)); height: calc(14px * var(--ht-e-rs) * var(--ht-e-cs));
+        font-size: calc(8px * var(--ht-e-rs) * var(--ht-e-cs));
       }
 
-      /* Thumbnail and the expand caret */
+      /* Thumbnail */
       :host(.eink) .task-thumb {
         width: calc(40px * var(--ht-e-rs)); height: calc(40px * var(--ht-e-rs));
         border-radius: calc(6px * var(--ht-e-rs));
@@ -8937,10 +8944,15 @@ class HomeTasksCard extends HTMLElement {
         width: calc(30px * var(--ht-e-rs)); height: calc(30px * var(--ht-e-rs));
         border-radius: calc(4px * var(--ht-e-rs));
       }
-      :host(.eink) .expand-btn { padding: calc(4px * var(--ht-e-rs)); }
-      :host(.eink) .compact .expand-btn { padding: calc(2px * var(--ht-e-rs)); }
-      :host(.eink) .expand-btn ha-icon { --mdc-icon-size: calc(18px * var(--ht-e-rs)); }
-      :host(.eink) .compact .expand-btn ha-icon { --mdc-icon-size: calc(16px * var(--ht-e-rs)); }
+      /* No expand caret. An e-paper panel is a static render — often a
+         screenshot served to it — so a control that opens a details pane is
+         an affordance for a gesture nobody can make, costing a chip's worth
+         of row width on every row. The button stays in the DOM (the whole
+         row keeps its click handler for a browser looking at the same
+         dashboard); only the caret goes. (0,3,0) beats the base rule's
+         "display: inline-flex", and the .compact/ha-icon sizing twins that
+         used to live here are gone with it — nothing left to size. */
+      :host(.eink) .expand-btn { display: none; }
 
       /* Section headers ride along, or a 14px heading sits over 88px rows.
          min-height stays 0 — the fit-rows layout depends on it. */

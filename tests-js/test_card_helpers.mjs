@@ -442,7 +442,8 @@ describe('theme hooks (issue #31)', () => {
     const css = card._getStyles();
     for (const v of ['--ht-eink-bg', '--ht-eink-fg', '--ht-eink-muted', '--ht-eink-border',
                      '--ht-eink-title-scale', '--ht-eink-image-filter',
-                     '--ht-eink-row-scale', '--ht-eink-row-gap']) {
+                     '--ht-eink-row-scale', '--ht-eink-row-gap',
+                     '--ht-eink-chip-scale']) {
       assert.ok(css.includes(`var(${v},`), `${v} must be declared with a fallback`);
     }
     // Black on white, and the doubled row the e-paper panel needs.
@@ -450,6 +451,8 @@ describe('theme hooks (issue #31)', () => {
     assert.ok(css.includes('var(--ht-eink-fg, #000000)'));
     assert.ok(css.includes('var(--ht-eink-row-scale, 2)'));
     assert.ok(css.includes('var(--ht-eink-row-gap, 20px)'));
+    // Chips ride the row scale and then come back down 30%.
+    assert.ok(css.includes('var(--ht-eink-chip-scale, 0.7)'));
   });
 
   test('the title scale falls through to the row scale, so one dial moves the whole row', async () => {
